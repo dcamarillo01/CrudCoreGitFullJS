@@ -85,7 +85,7 @@ namespace BL
                         usuarioTemporal.Nombre = usuario.Nombre;
                         usuarioTemporal.ApellidoPaterno = usuario.ApellidoPaterno;
                         usuarioTemporal.FechaNacimiento = usuario.FechaNacimiento;
-
+                         
 
                         result.Objects.Add(usuarioTemporal);
 
