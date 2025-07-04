@@ -15,8 +15,16 @@ namespace BL
         
             _context = context;
         }
-
-
-
+        public ML.Result Delete(int idUsuario)
+        {
+            ML.Result result = new ML.Result();
+            var query = _context.Usuarios.FirstOrDefault(usuario => usuario.IdUsuario == idUsuario);
+            if (query != null)
+            {
+                _context.Usuarios.Remove(query);
+                _context.SaveChanges();
+            }
+            return result;
+        }
     }
 }
