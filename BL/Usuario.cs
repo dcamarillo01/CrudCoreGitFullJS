@@ -163,11 +163,11 @@ namespace BL
             ML.Result result = new ML.Result();
             try
             {
-                ML.Usuario Usuario = new ML.Usuario();
+                DL.Usuario Usuario = new DL.Usuario();
                 Usuario.Nombre = usuario.Nombre;
                 Usuario.ApellidoPaterno = usuario.ApellidoPaterno;
                 Usuario.FechaNacimiento = usuario.FechaNacimiento;
-                var query = _context.Usuarios.Add(usuario);
+                var query = _context.Usuarios.Add(Usuario);
                 if (query != null)
                 {
                     _context.SaveChanges();
