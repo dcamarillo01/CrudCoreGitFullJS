@@ -17,12 +17,45 @@ namespace BL
         
             _context = context;
         }
+        //Metodo mostrar usuario por id con LinQ
+        public ML.Result GetById(int idUsuario)
+        {
+            ML.Result result = new ML.Result();
+            try
+            {
+                var query = _context.Usuarios.FirstOrDefault(usuario => usuario.IdUsuario == idUsuario);
+                if (query != null)
+                {
+                    result.Correct = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Correct = false;
+                result.ErrorMessage = ex.Message;
+                result.Ex = ex;
+            }
+            return result;
+        }
         //Metodo agregar con Linq
         public ML.Result Add(DL.Usuario usuario)
         {
             ML.Result result = new ML.Result();
-            _context.Usuarios.Add(usuario);
-            _context.SaveChanges();
+            try
+            {
+                var query = _context.Usuarios.Add(usuario);
+                if (query != null)
+                {
+                    _context.SaveChanges();
+                    result.Correct = true;
+                }
+            }
+            catch (Exception ex) 
+            {
+                result.Correct = false;
+                result.ErrorMessage = ex.Message;
+                result.Ex = ex;
+            }
             return result;
         }
         //Metodo eliminar con LinQ
@@ -36,12 +69,14 @@ namespace BL
                 {
                     _context.Usuarios.Remove(query);
                     _context.SaveChanges();
-                    
+                    result.Correct = true;
                 }
             }
             catch (Exception ex) 
             {
-
+                result.Correct = false;
+                result.ErrorMessage = ex.Message;
+                result.Ex = ex;
             }
 
             return result;
