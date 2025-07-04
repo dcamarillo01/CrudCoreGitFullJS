@@ -10,12 +10,13 @@ using System.Xml.XPath;
 namespace BL
 {
     public class Usuario
-    { 
+    {
 
         private readonly DL.EjercicioGitAbril2025Context _context;
 
-        public Usuario(DL.EjercicioGitAbril2025Context context) {
-        
+        public Usuario(DL.EjercicioGitAbril2025Context context)
+        {
+
             _context = context;
         }
         //Metodo mostrar usuario por id con LinQ
@@ -24,53 +25,29 @@ namespace BL
             ML.Result result = new ML.Result();
             try
             {
-                var query = _context.Usuarios.FirstOrDefault(usuario => usuario.IdUsuario == idUsuario);
+                var query = _context.Usuarios.Where(u => u.IdUsuario == idUsuario)
+                                                .Select(u => new ML.Usuario
+
+                                                {
+                                                    IdUsuario = u.IdUsuario,
+                                                    Nombre = u.Nombre,
+                                                    ApellidoPaterno = u.ApellidoPaterno,
+                                                    FechaNacimiento = u.FechaNacimiento
+                                                }).FirstOrDefault();
                 if (query != null)
                 {
+                    result.Object = query;
                     result.Correct = true;
+
                 }
-            }
-            catch (Exception ex)
-            {
-                result.Correct = false;
-                result.ErrorMessage = ex.Message;
-                result.Ex = ex;
-            }
-            return result;
-        }
-        //Metodo agregar con Linq
-        public ML.Result Add(DL.Usuario usuario)
-        {
-            ML.Result result = new ML.Result();
-            try
-            {
-                var query = _context.Usuarios.Add(usuario);
-                if (query != null)
+                else
+
                 {
-                    _context.SaveChanges();
-                    result.Correct = true;
-                }
-            }
-            catch (Exception ex) 
-            {
-                result.Correct = false;
-                result.ErrorMessage = ex.Message;
-                result.Ex = ex;
-            }
-            return result;
-        }
-        //Metodo eliminar con LinQ
-        public ML.Result Delete(int idUsuario)
-        {
-            ML.Result result = new ML.Result();
-            try
-            {
-                var query = _context.Usuarios.FirstOrDefault(usuario => usuario.IdUsuario == idUsuario);
-                if (query != null)
-                {
-                    _context.Usuarios.Remove(query);
-                    _context.SaveChanges();
-                    result.Correct = true;
+
+                    result.Correct = false;
+
+                    result.ErrorMessage = "El usuario no se encontro";
+
                 }
             }
             catch (Exception ex)
@@ -82,12 +59,13 @@ namespace BL
             return result;
         }
 
+        public ML.Result Update(int IdUsuario, ML.Usuario Usuario)
+        {
 
-        public ML.Result Update(int IdUsuario, ML.Usuario Usuario) { 
-        
             ML.Result result = new ML.Result();
 
-            try {
+            try
+            {
 
 
                 var usuario = (from theUser in _context.Usuarios
@@ -107,13 +85,15 @@ namespace BL
                 {
                     result.Correct = true;
                 }
-                else { 
+                else
+                {
                     result.Correct = false;
                 }
 
 
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
 
                 result.Correct = false;
                 result.ErrorMessage = ex.Message;
@@ -122,13 +102,15 @@ namespace BL
             return result;
         }
 
-        public ML.Result GetAll() {
+        public ML.Result GetAll()
+        {
 
             ML.Result result = new ML.Result();
             result.Objects = new List<object>();
 
-            try { 
-            
+            try
+            {
+
                 var query = (from usuario in _context.Usuarios
                              select new
                              {
@@ -143,27 +125,30 @@ namespace BL
                 {
 
                     result.Correct = true;
-                    foreach (var usuario in query) {
+                    foreach (var usuario in query)
+                    {
 
                         ML.Usuario usuarioTemporal = new ML.Usuario();
                         usuarioTemporal.IdUsuario = usuario.IdUsuario;
                         usuarioTemporal.Nombre = usuario.Nombre;
                         usuarioTemporal.ApellidoPaterno = usuario.ApellidoPaterno;
                         usuarioTemporal.FechaNacimiento = usuario.FechaNacimiento;
-                         
+
 
                         result.Objects.Add(usuarioTemporal);
 
                     }
 
                 }
-                else { 
+                else
+                {
                     result.Correct = false;
                 }
 
 
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 result.Correct = false;
                 result.ErrorMessage = ex.Message;
                 result.Ex = ex;
@@ -183,7 +168,7 @@ namespace BL
                 Usuario.ApellidoPaterno = usuario.ApellidoPaterno;
                 Usuario.FechaNacimiento = usuario.FechaNacimiento;
                 var query = _context.Usuarios.Add(Usuario);
-                if (query != null) 
+                if (query != null)
                 {
                     _context.SaveChanges();
                     result.Correct = true;
@@ -194,7 +179,7 @@ namespace BL
                     result.ErrorMessage = "No se pudo guardar el usuario";
                 }
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 result.Correct = false;
                 result.ErrorMessage = ex.Message;
@@ -206,7 +191,7 @@ namespace BL
         public ML.Result Delete(int idUsuario)
         {
             ML.Result result = new ML.Result();
-            try 
+            try
             {
                 var query = _context.Usuarios.FirstOrDefault(usuario => usuario.IdUsuario == idUsuario);
                 if (query != null)
@@ -227,7 +212,7 @@ namespace BL
                 result.ErrorMessage = ex.Message;
                 result.Ex = ex;
             }
-
+            return result ;
         }
     }
 }
