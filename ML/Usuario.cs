@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ML
 {
-    internal class Usuario
+    public class Usuario
     {
     }
 }

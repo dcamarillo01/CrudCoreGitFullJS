@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DL;
+using ML;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,15 +17,33 @@ namespace BL
         
             _context = context;
         }
+        //Metodo agregar con Linq
+        public ML.Result Add(DL.Usuario usuario)
+        {
+            ML.Result result = new ML.Result();
+            _context.Usuarios.Add(usuario);
+            _context.SaveChanges();
+            return result;
+        }
+        //Metodo eliminar con LinQ
         public ML.Result Delete(int idUsuario)
         {
             ML.Result result = new ML.Result();
-            var query = _context.Usuarios.FirstOrDefault(usuario => usuario.IdUsuario == idUsuario);
-            if (query != null)
+            try
             {
-                _context.Usuarios.Remove(query);
-                _context.SaveChanges();
+                var query = _context.Usuarios.FirstOrDefault(usuario => usuario.IdUsuario == idUsuario);
+                if (query != null)
+                {
+                    _context.Usuarios.Remove(query);
+                    _context.SaveChanges();
+                    
+                }
             }
+            catch (Exception ex) 
+            {
+
+            }
+
             return result;
         }
     }
