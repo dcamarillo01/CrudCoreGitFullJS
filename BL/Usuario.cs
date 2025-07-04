@@ -23,12 +23,12 @@ namespace BL
         {
             ML.Result result = new ML.Result();
             try
-            {
+            { 
                 var query = _context.Usuarios.Where(u => u.IdUsuario == idUsuario) 
                                 .Select(u => new DL.Usuario
                                 {
                                     IdUsuario = u.IdUsuario, 
-                                    Nombre = u.Nombre, 
+                                    Nombre = u.Nombre,  
                                     ApellidoPaterno = u.ApellidoPaterno,
                                     FechaNacimiento = u.FechaNacimiento
                                 }).FirstOrDefault();
