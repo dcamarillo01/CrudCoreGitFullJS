@@ -118,7 +118,7 @@ namespace BL
             try
             { 
                 var query = _context.Usuarios.Where(u => u.IdUsuario == idUsuario) 
-                                .Select(u => new DL.Usuario
+                                .Select(u => new ML.Usuario
                                 {
                                     IdUsuario = u.IdUsuario, 
                                     Nombre = u.Nombre,  
@@ -146,12 +146,12 @@ namespace BL
             return result;
         }
         //Metodo agregar con Linq
-        public ML.Result Add(DL.Usuario usuario)
+        public ML.Result Add(ML.Usuario usuario)
         {
             ML.Result result = new ML.Result();
             try
             {
-                DL.Usuario Usuario = new DL.Usuario();
+                ML.Usuario Usuario = new ML.Usuario();
                 Usuario.Nombre = usuario.Nombre;
                 Usuario.ApellidoPaterno = usuario.ApellidoPaterno;
                 Usuario.FechaNacimiento = usuario.FechaNacimiento;
@@ -179,7 +179,7 @@ namespace BL
         public ML.Result Delete(int idUsuario)
         {
             ML.Result result = new ML.Result();
-            try
+            try 
             {
                 var query = _context.Usuarios.FirstOrDefault(usuario => usuario.IdUsuario == idUsuario);
                 if (query != null)
