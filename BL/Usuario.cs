@@ -27,8 +27,8 @@ namespace BL
                 var query = _context.Usuarios.Where(u => u.IdUsuario == idUsuario)
                                 .Select(u => new DL.Usuario
                                 {
-                                    IdUsuario = u.IdUsuario,
-                                    Nombre = u.Nombre,
+                                    IdUsuario = u.IdUsuario, 
+                                    Nombre = u.Nombre, 
                                     ApellidoPaterno = u.ApellidoPaterno,
                                     FechaNacimiento = u.FechaNacimiento
                                 }).FirstOrDefault();
@@ -74,7 +74,7 @@ namespace BL
                     result.ErrorMessage = "No se pudo guardar el usuario";
                 }
             }
-            catch (Exception ex)
+            catch (Exception ex) 
             {
                 result.Correct = false;
                 result.ErrorMessage = ex.Message;
