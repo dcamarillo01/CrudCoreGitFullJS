@@ -13,7 +13,7 @@ namespace BL
 
         public Usuario(DL.EjercicioGitAbril2025Context context) {
         
-            _context = context;
+            _context = context; 
         }
 
            
