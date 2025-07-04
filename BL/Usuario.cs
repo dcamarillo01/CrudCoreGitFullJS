@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace BL
 {
     public class Usuario
-    {
+    { 
 
         private readonly DL.EjercicioGitAbril2025Context _context;
 
