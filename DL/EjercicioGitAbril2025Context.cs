@@ -25,14 +25,13 @@ public partial class EjercicioGitAbril2025Context : DbContext
     {
         modelBuilder.Entity<Usuario>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("Usuario");
+            entity.HasKey(e => e.IdUsuario).HasName("PK__Usuario__5B65BF9779A78C2E");
+
+            entity.ToTable("Usuario");
 
             entity.Property(e => e.ApellidoPaterno)
                 .HasMaxLength(50)
                 .IsUnicode(false);
-            entity.Property(e => e.IdUsuario).ValueGeneratedOnAdd();
             entity.Property(e => e.Nombre)
                 .HasMaxLength(50)
                 .IsUnicode(false);

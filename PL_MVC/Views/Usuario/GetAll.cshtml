@@ -201,6 +201,8 @@ $(document).ready(function () {
             ? '@Url.Action("Add", "Usuario")' 
             : '@Url.Action("Update", "Usuario")';
 
+        console.log(url);
+
         $.ajax({
             type: "POST",
             url: url,
