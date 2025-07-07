@@ -40,7 +40,7 @@ namespace PL_MVC.Controllers
         public JsonResult Update(int idusuario, ML.Usuario usuario)
         {
             ML.Result result = new ML.Result();
-            idusuario = usuario.IdUsuario;
+            usuario.IdUsuario = idusuario;
             if (result.Correct)
             {
                 return Json(result);
