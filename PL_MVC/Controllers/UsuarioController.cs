@@ -25,7 +25,31 @@ namespace PL_MVC.Controllers
 
         }
 
-        public JsonResult 
+        public JsonResult GetAllJson()
+        {
+            ML.Result result = new ML.Result();
+            if (result.Correct)
+            {
+                return Json(result);
+            }
+            else
+            {
+                return Json(result.ErrorMessage);
+            }
+        }
+        public JsonResult Update(int idusuario, ML.Usuario usuario)
+        {
+            ML.Result result = new ML.Result();
+            idusuario = usuario.IdUsuario;
+            if (result.Correct)
+            {
+                return Json(result);
+            }
+            else
+            {
+                return Json(result.ErrorMessage);
+            }
+        }
 
 
 
