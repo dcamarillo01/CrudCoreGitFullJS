@@ -9,8 +9,8 @@
     <div class="row">
         <div class="col">
             <div class="row">
-                <div class="col">
-                    <button class="btn btn-info" id="btnAdd">Agregar Usuario</button>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <button class="btn btn-success mb-3" onclick="abrirModal()">Agregar Usuario</button>
                 </div>
             </div>
             <div class="row" style="padding-top:20px">
@@ -32,48 +32,47 @@
                 </div>
             </div>
         </div>
-        <div class="modal fade " id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
-            <div class="modal-dialog modal-xl" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Agregar Restaurante</h5>
-                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="myForm">
-                            <div class="form-group" hidden>
-                                <label>Nombre</label>
-                                <input type="text" class="form-control" id="IdUsuario" name="idusuario" value="0" placeholder="Ingresa Nombre">
-                            </div>
-                            <div class="form-group">
-                                <label>Nombre</label>
-                                <input type="text" class="form-control" id="Nombre" name="nombre" placeholder="Ingresa Nombre">
-                            </div>
-                            <div class="form-group">
-                                <label>Slogan</label>
-                                <input type="text" class="form-control" id="ApellidoPaterno" name="apellidopaterno" placeholder="Slogan">
-                            </div>
-                            <div class="form-group">
-                                <label>Descripcion</label>
-                                <input type="text" class="form-control" id="FechaNacimiento" name="fechanacimiento" placeholder="Descripcion">
-                            </div>
 
-                            
-                            <div class="form-group" style="padding-top:20px">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-
-                            </div>
-                        </form>
+<!-- Modal -->
+<div class="modal fade" id="modalUsuario" tabindex="-1" aria-labelledby="tituloModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content shadow rounded-4">
+            <form id="formUsuario">
+                <div class="modal-header bg-black text-white">
+                    <h5 class="modal-title" id="tituloModal">Agregar Restaurante</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="idUsuario" />
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Nombre</label>
+                        <input type="text" id="nombre" class="form-control"/>
+                        <p hidden="hidden"></p>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Apellido Paterno</label>
+                        <input type="text" id="apellidoPaterno" class="form-control"/>
+                        <p hidden="hidden"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Fecha de Nacimiento</label>
+                        <input type="date" id="fechaNacimiento" class="form-control"/>
+                        <p hidden="hidden"></p>
                     </div>
                 </div>
-            </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-check-circle-fill"></i> Guardar
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle-fill"></i> Cancelar
+                    </button>
+                </div>
+
+            </form>
         </div>
     </div>
+</div>
 </container>
 
 
@@ -100,7 +99,7 @@
                                                     <td>${value.nombre}</td>
                                                     <td>${value.apellidoPaterno}</td>
                                                     <td>${value.fechaNacimiento}</td>
-                                                    <td><button id="btnUpdate" class="btn btn-warning"><i class="bi bi-pencil-square"></i></button></td>
+                                                    <td><button id="btnUpdate" class="btn btn-warning" onclick="editarUsuario(${value.idRestaurante})"><i class="bi bi-pencil-square"></i></button></td>
                                                     <td><button id="btnDelete" class="btn btn-danger"><i class="bi bi-person-x"></i></button></td>
                                                      </tr>
                                                 `
@@ -143,6 +142,31 @@
 
     }
     );
+    
+    function abrirModal() {
+    $('#formUsuario')[0].reset();
+    $('#idUsuario').val('');
+    $('#tituloModal').text('Agregar Usuario');
+    $('#formUsuario').find('p').text('').attr('hidden', 'hidden');
+    $('#modalUsuario').modal('show');
+}
+
+function editarUsuario(IdUsuario) {
+    $.ajax({
+        url: "@Url.Action("GetById","Usuario")",
+        type: 'GET',
+        data: { IdUsuario: IdUsuario },
+        success: function (usuario) {
+            $('#idUsuario').val(usuario.idUsuario);
+            $('#nombre').val(usuario.nombre); 
+            $('#apellidoPaterno').val(usuario.apellidoPaterno);
+            $('#fechaNacimiento').val(usuario.fechaNacimiento);
+            $('#tituloModal').text('Editar Usuario');
+            $('#formUsuario').find('p').text('').attr('hidden', 'hidden');
+            $('#modalUsuario').modal('show');
+        }
+    });
+}
 
 
 </script>
