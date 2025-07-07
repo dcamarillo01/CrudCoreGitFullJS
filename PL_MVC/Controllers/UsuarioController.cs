@@ -93,6 +93,7 @@ namespace PL_MVC.Controllers
             return Json(resultDelete);
         }
 
+        [HttpGet]
         public JsonResult GetById(int IdUsuario)
         {
 
