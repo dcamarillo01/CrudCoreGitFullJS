@@ -67,15 +67,15 @@ namespace PL_MVC.Controllers
                 return Json(result.ErrorMessage);
             }
         }
-
-        public JsonResult Add(string Nombre, string ApellidoPaterno, string FechaNaciemiento)
+        [HttpPost]
+        public JsonResult Add(/*string Nombre, string ApellidoPaterno, string FechaNaciemiento*/ML.Usuario usuario)
         {
 
-            ML.Usuario usuario = new ML.Usuario();
+            //ML.Usuario usuario = new ML.Usuario();
 
-            usuario.Nombre = Nombre;
-            usuario.ApellidoPaterno = ApellidoPaterno;
-            usuario.FechaNacimiento = DateOnly.Parse(FechaNaciemiento);
+            //usuario.Nombre = Nombre;
+            //usuario.ApellidoPaterno = ApellidoPaterno;
+            //usuario.FechaNacimiento = DateOnly.Parse(FechaNaciemiento);
 
             ML.Result resultAdd = _usuario.Add(usuario);
 

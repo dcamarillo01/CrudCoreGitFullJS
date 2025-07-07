@@ -76,6 +76,7 @@
 </container>
 
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script src="~/lib/jquery/dist/jquery.js"></script>
 
@@ -185,6 +186,51 @@
     );
 
 
+$(document).ready(function () {
+    $("#formUsuario").on("submit", function (e) {
+        e.preventDefault();
 
+        var usuario = {
+            IdUsuario: $("#idUsuario").val() || 0,
+            Nombre: $("#nombre").val(),
+            ApellidoPaterno: $("#apellidoPaterno").val(),
+            FechaNacimiento: $("#fechaNacimiento").val()
+        };
+
+        var url = usuario.IdUsuario == 0 
+            ? '@Url.Action("Add", "Usuario")' 
+            : '@Url.Action("Update", "Usuario")';
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: usuario, 
+            success: function (result) {
+                if (result.Correct) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: usuario.IdUsuario == 0 ? '¡Agregado!' : '¡Actualizado!',
+                        text: 'El usuario se guardó correctamente.'
+                    });
+                    $("#formUsuario")[0].reset();
+                    $("#idUsuario").val(0);
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'No se pudo guardar: ' + result.ErrorMessage
+                    });
+                }
+            },
+            error: function (xhr, status, error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error inesperado: ' + error
+                });
+            }
+        });
+    });
+});
 
 </script>
