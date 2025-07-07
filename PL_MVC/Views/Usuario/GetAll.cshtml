@@ -3,3 +3,146 @@
 *@
 @{
 }
+
+
+<container>
+    <div class="row">
+        <div class="col">
+            <div class="row">
+                <div class="col">
+                    <button class="btn btn-info" id="btnAdd">Agregar Usuario</button>
+                </div>
+            </div>
+            <div class="row" style="padding-top:20px">
+                <div class="col">
+                    <table class="table table-responsive table-dark table-sm">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Nombre</th>
+                                <th>ApellidoPaterno</th>
+                                <th>Fecha</th>
+                                <th>Editar</th>
+                                <th>Eliminar</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade " id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+            <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Agregar Restaurante</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="myForm">
+                            <div class="form-group" hidden>
+                                <label>Nombre</label>
+                                <input type="text" class="form-control" id="IdUsuario" name="idusuario" value="0" placeholder="Ingresa Nombre">
+                            </div>
+                            <div class="form-group">
+                                <label>Nombre</label>
+                                <input type="text" class="form-control" id="Nombre" name="nombre" placeholder="Ingresa Nombre">
+                            </div>
+                            <div class="form-group">
+                                <label>Slogan</label>
+                                <input type="text" class="form-control" id="ApellidoPaterno" name="apellidopaterno" placeholder="Slogan">
+                            </div>
+                            <div class="form-group">
+                                <label>Descripcion</label>
+                                <input type="text" class="form-control" id="FechaNacimiento" name="fechanacimiento" placeholder="Descripcion">
+                            </div>
+
+                            
+                            <div class="form-group" style="padding-top:20px">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</container>
+
+
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+
+<script>
+
+    // =============== GET ALL ========================= \\
+    $(document).ready(function () {
+        //Mando los datos a mi controlador
+        $.ajax({
+            url: "@Url.Action("GetAllJson","Usuario")",
+            type: "GET",
+            data: {},
+            success: function (data) {
+                console.log(data);
+                $.each(data.objects, function (index, value) {
+                    console.log(value);
+                    $("#tbody").append(
+                        `
+                                                <tr class="trSelector">
+                                                    <td>${value.idUsuario}</td>
+                                                    <td>${value.nombre}</td>
+                                                    <td>${value.apellidoPaterno}</td>
+                                                    <td>${value.fechaNacimiento}</td>
+                                                    <td><button id="btnUpdate" class="btn btn-warning"><i class="bi bi-pencil-square"></i></button></td>
+                                                    <td><button id="btnDelete" class="btn btn-danger"><i class="bi bi-person-x"></i></button></td>
+                                                     </tr>
+                                                `
+                    )
+                });
+            }
+        })
+    });
+
+
+    // ======================== DELETE ================= \\
+
+    $(document).on('click', '#btnDelete', function () {
+        console.log("btnDelete")
+        //alert("Quieres eliminar este usuario?");
+
+        var button = $(this);
+        var IdUsuario = parseInt($(this).closest("tr").find('td')[0].childNodes[0].data);
+        console.log(IdUsuario);
+
+        //Delete AJAX
+        $.ajax({
+            url: "@Url.Action("Delete","Usuario")",
+            type: "Post",
+            data: { IdUsuario },
+            success: function (data) {
+                console.log("Delete Exitoso");
+                Swal.fire({
+                    title: "Delete Exitoso!",
+                    text: "El usuario fue eliminado.",
+                    icon: "success"
+                });
+
+
+                //$(this).closest(".trSelector").fadeOut();
+                button.closest("tr").fadeOut();
+                //$(this).fadeOut()
+            }
+        });
+
+    }
+    );
+
+
+</script>

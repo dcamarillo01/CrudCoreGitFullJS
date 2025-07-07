@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace PL_MVC.Controllers
 {
@@ -7,8 +8,9 @@ namespace PL_MVC.Controllers
 
         private readonly BL.Usuario _usuario;
 
-        public UsuarioController(BL.Usuario usuario) { 
-        
+        public UsuarioController(BL.Usuario usuario)
+        {
+
             _usuario = usuario;
         }
 
@@ -18,16 +20,25 @@ namespace PL_MVC.Controllers
             return View();
         }
 
-        public IActionResult GetAll() { 
-        
+
+        // ========= VISTA GETALL =========== \\
+        public IActionResult GetAll()
+        {
+
             return View();
 
+        }
 
+        // ========= VISTA FORMULARIO ============= \\
+
+        public IActionResult Formulario() {
+
+            return View();
         }
 
         public JsonResult GetAllJson()
         {
-            ML.Result result = new ML.Result();
+            ML.Result result = _usuario.GetAll();
             if (result.Correct)
             {
                 return Json(result);
@@ -37,9 +48,15 @@ namespace PL_MVC.Controllers
                 return Json(result.ErrorMessage);
             }
         }
-        public JsonResult Update(int idusuario, ML.Usuario usuario)
+        public JsonResult Update(int idusuario, string Nombre, string ApellidoPaterno, string FechaNaciemiento)
         {
-            ML.Result result = new ML.Result();
+            ML.Usuario usuario = new ML.Usuario();
+
+            usuario.Nombre = Nombre;
+            usuario.ApellidoPaterno = ApellidoPaterno;
+            usuario.FechaNacimiento = DateOnly.Parse(FechaNaciemiento);
+
+            ML.Result result = _usuario.Update(idusuario,usuario);
             usuario.IdUsuario = idusuario;
             if (result.Correct)
             {
@@ -51,10 +68,9 @@ namespace PL_MVC.Controllers
             }
         }
 
+        public JsonResult Add(string Nombre, string ApellidoPaterno, string FechaNaciemiento)
+        {
 
-
-        public JsonResult Add(string Nombre, string ApellidoPaterno, string FechaNaciemiento) {
-            
             ML.Usuario usuario = new ML.Usuario();
 
             usuario.Nombre = Nombre;
@@ -63,14 +79,28 @@ namespace PL_MVC.Controllers
 
             ML.Result resultAdd = _usuario.Add(usuario);
 
-        
+
+
+            return Json(resultAdd);
         }
 
 
-        public JsonResult Delete() { }
+        public JsonResult Delete(int IdUsuario)
+        {
 
-        public JsonResult GetById() {
+            ML.Result resultDelete = _usuario.Delete(IdUsuario);
 
+            return Json(resultDelete);
+        }
+
+        public JsonResult GetById(int IdUsuario)
+        {
+
+            ML.Result resultGetById = _usuario.GetById(IdUsuario);
+
+            return Json(resultGetById);
+
+        }
 
 
 
