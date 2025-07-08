@@ -208,12 +208,16 @@ $(document).ready(function () {
             url: url,
             data: usuario, 
             success: function (result) {
-                if (result.Correct) {
+                console.log(result)
+                if (result.correct) {
                     Swal.fire({
                         icon: 'success',
                         title: usuario.IdUsuario == 0 ? '¡Agregado!' : '¡Actualizado!',
                         text: 'El usuario se guardó correctamente.'
-                    });
+                        }).then(() => {
+                            $('#modalUsuario').modal('hide'); 
+                            location.reload();
+                        });
                     $("#formUsuario")[0].reset();
                     $("#idUsuario").val(0);
                 } else {
