@@ -72,7 +72,6 @@ namespace BL
                                where theUser.IdUsuario == IdUsuario
                                select theUser).FirstOrDefault();
 
-                usuario.IdUsuario = Usuario.IdUsuario;
                 usuario.Nombre = Usuario.Nombre;
                 usuario.ApellidoPaterno = Usuario.ApellidoPaterno;
                 usuario.FechaNacimiento = Usuario.FechaNacimiento;

@@ -48,13 +48,13 @@ namespace PL_MVC.Controllers
                 return Json(result.ErrorMessage);
             }
         }
-        public JsonResult Update(int idusuario, string Nombre, string ApellidoPaterno, string FechaNaciemiento)
+        public JsonResult Update(int idusuario, string Nombre, string ApellidoPaterno, DateOnly FechaNaciemiento)
         {
             ML.Usuario usuario = new ML.Usuario();
 
             usuario.Nombre = Nombre;
             usuario.ApellidoPaterno = ApellidoPaterno;
-            usuario.FechaNacimiento = DateOnly.Parse(FechaNaciemiento);
+            usuario.FechaNacimiento = FechaNaciemiento;
 
             ML.Result result = _usuario.Update(idusuario,usuario);
             usuario.IdUsuario = idusuario;
