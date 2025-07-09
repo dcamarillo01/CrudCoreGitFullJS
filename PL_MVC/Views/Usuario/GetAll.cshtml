@@ -1,0 +1,256 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+<container>
+    <div class="row">
+        <div class="col">
+            <div class="row">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <button class="btn btn-success mb-3" onclick="abrirModal()">Agregar Usuario</button>
+                </div>
+            </div>
+            <div class="row" style="padding-top:20px">
+                <div class="col">
+                    <table class="table table-responsive table-dark table-sm">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Nombre</th>
+                                <th>ApellidoPaterno</th>
+                                <th>Fecha</th>
+                                <th>Editar</th>
+                                <th>Eliminar</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="modalUsuario" tabindex="-1" aria-labelledby="tituloModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content shadow rounded-4">
+                    <form id="formUsuario">
+                        <div class="modal-header bg-black text-white">
+                            <h5 class="modal-title" id="tituloModal">Agregar Restaurante</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="idUsuario" />
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Nombre</label>
+                                <input type="text" id="nombre" class="form-control" />
+                                <p hidden="hidden"></p>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Apellido Paterno</label>
+                                <input type="text" id="apellidoPaterno" class="form-control" />
+                                <p hidden="hidden"></p>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Fecha de Nacimiento</label>
+@*                                 <input type="date" id="fechaNacimiento" class="form-control" />
+ *@
+                                <input type="text" id="fechaNacimiento" name="FechaNacimiento" class="form-control" />
+                                <p hidden="hidden"></p>
+                            </div>
+                        </div>
+                        <div class="modal-footer justify-content-center">
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-check-circle-fill"></i> Guardar
+                            </button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                <i class="bi bi-x-circle-fill"></i> Cancelar
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+</container>
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" />
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+
+
+<script>
+
+    // =============== GET ALL ========================= \\
+    $(document).ready(function () {
+        //Mando los datos a mi controlador
+        $.ajax({
+            url: "@Url.Action("GetAllJson", "Usuario")",
+            type: "GET",
+            data: {},
+            success: function (data) {
+                console.log(data);
+                $.each(data.objects, function (index, value) {
+                    console.log(value);
+                    $("#tbody").append(
+                        `
+                                                        <tr class="trSelector">
+                                                            <td>${value.idUsuario}</td>
+                                                            <td>${value.nombre}</td>
+                                                            <td>${value.apellidoPaterno}</td>
+                                                            <td>${value.fechaNacimiento}</td>
+                                                            <td><button id="btnUpdate" class="btn btn-warning"><i class="bi bi-pencil-square"></i></button></td>
+                                                            <td><button id="btnDelete" class="btn btn-danger"><i class="bi bi-person-x"></i></button></td>
+                                                             </tr>
+                                                        `
+                    )
+                });
+            }
+        })
+    });
+
+
+    // ======================== DELETE ================= \\
+
+    $(document).on('click', '#btnDelete', function () {
+        console.log("btnDelete")
+        //alert("Quieres eliminar este usuario?");
+
+        var button = $(this);
+        var IdUsuario = parseInt($(this).closest("tr").find('td')[0].childNodes[0].data);
+        console.log(IdUsuario);
+
+        //Delete AJAX
+        $.ajax({
+            url: "@Url.Action("Delete", "Usuario")",
+            type: "Post",
+            data: { IdUsuario },
+            success: function (data) {
+                console.log("Delete Exitoso");
+                Swal.fire({
+                    title: "Delete Exitoso!",
+                    text: "El usuario fue eliminado.",
+                    icon: "success"
+                });
+
+
+                //$(this).closest(".trSelector").fadeOut();
+                button.closest("tr").fadeOut();
+                //$(this).fadeOut()
+            }
+        });
+
+    }
+    );
+    $(function () {
+        $("#fechaNacimiento").datepicker({
+            dateFormat: "yy-mm-dd",
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "1900:2024"
+        });
+    });
+    console.log($().datepicker);
+    function abrirModal() {
+        $('#formUsuario')[0].reset();
+        $('#idUsuario').val('');
+        $('#tituloModal').text('Agregar Usuario');
+        $('#formUsuario').find('p').text('').attr('hidden', 'hidden');
+
+        $('#modalUsuario').modal('show');
+    }
+
+    $(document).on('click', '#btnUpdate', function () {
+
+        console.log("Update")
+
+        var IdUsuario = parseInt($(this).closest("tr").find('td')[0].childNodes[0].data);
+
+
+        $.ajax({
+            url: "@Url.Action("GetById", "Usuario")",
+            type: 'GET',
+            data: { IdUsuario: IdUsuario },
+            dataType: 'json',
+            success: function (usuario) {
+
+                console.log("funciono");
+                $('#idUsuario').val(usuario.object.idUsuario);
+                $('#nombre').val(usuario.object.nombre);
+                $('#apellidoPaterno').val(usuario.object.apellidoPaterno);
+                $('#fechaNacimiento').val(usuario.object.fechaNacimiento);
+                $('#tituloModal').text('Editar Usuario');
+                $('#formUsuario').find('p').text('').attr('hidden', 'hidden');
+                $('#modalUsuario').modal('show');
+            }
+        });
+
+
+
+    }
+
+
+
+    );
+
+
+$(document).ready(function () {
+    $("#formUsuario").on("submit", function (e) {
+        e.preventDefault();
+
+        var usuario = {
+            IdUsuario: $("#idUsuario").val() || 0,
+            Nombre: $("#nombre").val(),
+            ApellidoPaterno: $("#apellidoPaterno").val(),
+            FechaNacimiento: $("#fechaNacimiento").val()
+        };
+
+        var url = usuario.IdUsuario == 0 
+            ? '@Url.Action("Add", "Usuario")' 
+            : '@Url.Action("Update", "Usuario")';
+
+        console.log(url);
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: usuario, 
+            success: function (result) {
+                console.log(result)
+                if (result.correct) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: usuario.IdUsuario == 0 ? '¡Agregado!' : '¡Actualizado!',
+                        text: 'El usuario se guardó correctamente.'
+                        }).then(() => {
+                            $('#modalUsuario').modal('hide'); 
+                            location.reload();
+                        });
+                    $("#formUsuario")[0].reset();
+                    $("#idUsuario").val(0);
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'No se pudo guardar: ' + result.ErrorMessage
+                    });
+                }
+            },
+            error: function (xhr, status, error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error inesperado: ' + error
+                });
+            }
+        });
+    });
+});
+
+</script>
