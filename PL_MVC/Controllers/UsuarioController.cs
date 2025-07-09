@@ -48,16 +48,16 @@ namespace PL_MVC.Controllers
                 return Json(result.ErrorMessage);
             }
         }
-        public JsonResult Update(int idusuario, string Nombre, string ApellidoPaterno, DateOnly FechaNaciemiento)
+        public JsonResult Update(int idusuario, /*string Nombre, string ApellidoPaterno, DateOnly FechaNaciemiento*/ML.Usuario usuario)
         {
-            ML.Usuario usuario = new ML.Usuario();
+            //ML.Usuario usuario = new ML.Usuario();
 
-            usuario.Nombre = Nombre;
-            usuario.ApellidoPaterno = ApellidoPaterno;
-            usuario.FechaNacimiento = FechaNaciemiento;
+            //usuario.Nombre = Nombre;
+            //usuario.ApellidoPaterno = ApellidoPaterno;
+            //usuario.FechaNacimiento = FechaNaciemiento;
 
-            ML.Result result = _usuario.Update(idusuario,usuario);
             usuario.IdUsuario = idusuario;
+            ML.Result result = _usuario.Update(idusuario,usuario);
             if (result.Correct)
             {
                 return Json(result);

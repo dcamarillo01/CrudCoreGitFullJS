@@ -56,7 +56,9 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Fecha de Nacimiento</label>
-                                <input type="date" id="fechaNacimiento" class="form-control" />
+@*                                 <input type="date" id="fechaNacimiento" class="form-control" />
+ *@
+                                <input type="text" id="fechaNacimiento" name="FechaNacimiento" class="form-control" />
                                 <p hidden="hidden"></p>
                             </div>
                         </div>
@@ -78,7 +80,10 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" />
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+
 
 <script>
 
@@ -143,12 +148,21 @@
 
     }
     );
-
+    $(function () {
+        $("#fechaNacimiento").datepicker({
+            dateFormat: "yy-mm-dd",
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "1900:2024"
+        });
+    });
+    console.log($().datepicker);
     function abrirModal() {
         $('#formUsuario')[0].reset();
         $('#idUsuario').val('');
         $('#tituloModal').text('Agregar Usuario');
         $('#formUsuario').find('p').text('').attr('hidden', 'hidden');
+
         $('#modalUsuario').modal('show');
     }
 
