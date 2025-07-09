@@ -48,13 +48,9 @@ namespace PL_MVC.Controllers
                 return Json(result.ErrorMessage);
             }
         }
-        public JsonResult Update(int idusuario, /*string Nombre, string ApellidoPaterno, DateOnly FechaNaciemiento*/ML.Usuario usuario)
+        public JsonResult Update(int idusuario, ML.Usuario usuario)
         {
-            //ML.Usuario usuario = new ML.Usuario();
-
-            //usuario.Nombre = Nombre;
-            //usuario.ApellidoPaterno = ApellidoPaterno;
-            //usuario.FechaNacimiento = FechaNaciemiento;
+            
 
             usuario.IdUsuario = idusuario;
             ML.Result result = _usuario.Update(idusuario,usuario);
@@ -68,14 +64,9 @@ namespace PL_MVC.Controllers
             }
         }
         [HttpPost]
-        public JsonResult Add(/*string Nombre, string ApellidoPaterno, string FechaNaciemiento*/ML.Usuario usuario)
+        public JsonResult Add(ML.Usuario usuario)
         {
 
-            //ML.Usuario usuario = new ML.Usuario();
-
-            //usuario.Nombre = Nombre;
-            //usuario.ApellidoPaterno = ApellidoPaterno;
-            //usuario.FechaNacimiento = DateOnly.Parse(FechaNaciemiento);
 
             ML.Result resultAdd = _usuario.Add(usuario);
 
